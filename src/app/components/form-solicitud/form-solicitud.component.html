@@ -1,0 +1,128 @@
+
+<div class="card">
+  <div class="row col-sm-10 offset-sm-1 p-4" id="formulario">
+    <div class="card-header">
+      <h3 class="card-title">{{title}}</h3>
+    </div>
+    <div class="card-body">
+  
+      <br>
+  <div class="row col-sm-10 offset-sm-1 p-4" id="formulario">
+    <h3 class=" pb-3">Solicitud </h3>
+    <hr id="borde" />
+    <div class="col-md-10 offset-sm-1">
+  
+  <div class="row">
+    <!-- Cartucho -->
+    <div class="form-group col-sm-6" id="autocompletado">
+      <label class="control-label h5">Cartucho</label>
+      <br>
+      <div class="row">
+        <div class="col-sm-6">
+          <select [compareWith]="comparar" class="form-control" [(ngModel)]="cartucho.marca" name="marca"
+            style="width:250px;">
+            <option [ngValue]="undefined">--- seleccionar una marca ---</option>
+            <option *ngFor="let marca of marcas" [ngValue]="marca">{{marca.nombre}}</option>
+          </select>
+        </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <mat-form-field>
+            <mat-label>Modelo</mat-label>
+            <input type="text" placeholder="Escribir Modelo" aria-label="cartuchos" matInput
+              [formControl]="myCartuchoControl" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="viewCartucho"
+              (optionSelected)="selectedCartucho($event)">
+              <mat-option *ngFor="let cartucho of cartuchosFiltrados | async" [value]="cartucho">
+                {{cartucho.modelo}}&nbsp; {{cartucho.color.nombre}}&nbsp;{{cartucho.tipoCartucho.descripcion}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </div>
+      </div>
+    </div>
+  
+    <!-- Impresora -->
+    <div class="form-group col-sm-6" id="autocompletado">
+      <label class="control-label h5">Impresora</label>
+      <div class="row">
+        <div class="col-sm-6">
+          <select [compareWith]="comparar" class="form-control" [(ngModel)]="impresora.marca" name="marca"
+            style="width:250px;">
+            <option [ngValue]="undefined">--- seleccionar una marca ---</option>
+            <option *ngFor="let marca of marcas" [ngValue]="marca">{{marca.nombre}}</option>
+          </select>
+        </div>
+        <div class="row ">
+        <div class="col-sm-6">
+          <mat-form-field>
+            <mat-label>Modelo</mat-label>
+            <input type="text" placeholder="Escribir Modelo" aria-label="impresoras" matInput
+              [formControl]="myImpresoraControl" [matAutocomplete]="autoo">
+            <mat-autocomplete #autoo="matAutocomplete" [displayWith]="viewImpresora"
+              (optionSelected)="selectedImpresora($event)">
+              <mat-option *ngFor="let impresora of impresorasFiltrados | async" [value]="impresora">
+                {{impresora.modelo}}&nbsp; {{impresora.tipoImpresora.descripcion}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  <br>
+  <div class="row">
+                  
+                  <div class="form-group col-sm-3">
+                      <label for="tipoCartucho" class="control-label h5">Tipo Cartucho</label>
+                      <select [compareWith]="comparar" class="form-select" [(ngModel)]="cartucho.tipoCartucho" name="tipoCartucho">
+                      <option [ngValue]="undefined">Seleccione tipo...</option>
+                      <option *ngFor="let tipoCartucho of tipoCartuchos" [ngValue]="tipoCartucho">{{tipoCartucho.descripcion}}
+                      </option>
+                    </select>
+                  </div>
+  
+                  
+  
+                  <div class="form-group col-sm-3">
+                      
+                          <label for="color" class="control-label h5">Color</label>
+                          <select [compareWith]="comparar" class="form-select " [(ngModel)]="cartucho.color" name="color">
+                            <option [ngValue]="undefined" >Seleccione el color...</option>
+                            <option *ngFor="let color of colores" [ngValue]="color">{{color.nombre}}</option>
+                          </select>                  
+                  </div>
+  
+                  <div class="form-group col-sm-3">
+                      <label  class="control-label h5">Cantidad</label>
+                      <select [compareWith]="comparar" class="form-select"[(ngModel)]="solicitud.cantidad" name="cantidad" required>
+                          <option [ngValue]="undefined" disabled selected>Seleccione la cantidad....</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                      <!--<option value="3">3</option>-->
+                      </select>
+                  </div>
+              </div>
+  <br>
+  
+              <label for="justificacion" class="form-label h5 mt-3" [(ngModel)]="solicitud.justificacion">Justificación</label>
+              <textarea class="form-control" id="justificacion" rows="3" required></textarea>
+              <div class="invalid-feedback">Este campo es obligatorio.</div>
+  <br>
+  <div>
+    
+      <button type="button" id="submitButton" class="btn mt-4 mb-4 pls-5 col-sm-2 text-sm-center fs-5 float-end " >Enviar</button>
+      <div id="validationMessage" class="alert alert-danger mt-3" style="display: none;">
+        Complete todos los campos antes de enviar el formulario.           
+  </div>
+          </div>
+          <!-- ... (código posterior) ... -->
+          </div>
+          
+      </div>
+      
+        <div class="card-footer">
+     </div>
+    </div>

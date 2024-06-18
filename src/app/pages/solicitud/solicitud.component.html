@@ -1,0 +1,167 @@
+
+        <div class="col-md-10">
+          <mat-form-field>
+            <mat-label>Modelo</mat-label>
+            <input type="text" placeholder="Escribir Modelo" aria-label="cartuchos" matInput
+              [formControl]="myCartuchoControl" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="viewCartucho"
+              (optionSelected)="selectedCartucho($event)">
+              <mat-option *ngFor=" let cartucho of cartuchosFiltrados | async" [value]="cartucho">
+                {{cartucho.modelo}}&nbsp; {{cartucho.color.nombre}}&nbsp;{{cartucho.tipoCartucho.descripcion}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      
+
+      <div class="form-group col-sm-4">
+        <label class="control-label h5">Impresosa</label>
+        <div class="col-sm-6">
+          <select [compareWith]="comparar" class="form-control" [(ngModel)]="impresora.marca" name="imarca"
+            style="width:250px;">
+            <option [ngValue]="undefined">--- selecionar una marca ---</option>
+            <option *ngFor="let imarca of marcas" [ngValue]="imarca">{{imarca.nombre}}</option>
+          </select>
+
+          <div class="col-md-10">
+            <mat-form-field>
+              <mat-label>Modelo</mat-label>
+              <input type="text" placeholder="Escribir Modelo" aria-label="impresoras" matInput
+                [formControl]="myImpresoraControl" [matAutocomplete]="autoo">
+              <mat-autocomplete #autoo="matAutocomplete" [displayWith]="viewImpresora"
+                (optionSelected)="selectedImpresora($event)">
+                <mat-option *ngFor=" let impresora of impresorasFiltrados | async" [value]="impresora">
+                  {{impresora.modelo}}&nbsp; {{impresora.tipoImpresora.descripcion}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+
+        </div>
+      </div>
+
+      <br />
+      <br />
+      <div class="form-group row">
+        <label for="tipoCarga" class="col-form-label col-sm-2">TIPO DE CARGA </label>
+        <div class="col-sm-6">
+          <select [compareWith]="comparar" class="form-control" [(ngModel)]="solicitud.tipoCarga" name="tipoCarga"
+            style="width:500px;">
+            <option [ngValue]="undefined">--- selecionar ---</option>
+            <option *ngFor="let tipoCarga of tipoCargas" [ngValue]="tipoCarga">{{tipoCarga.descripcion}}</option>
+          </select>
+        </div>
+      </div>
+
+      <br /><br />
+
+
+      <div class="form-group col-sm-4">
+        <label class="control-label h5">Cantidad</label>
+        <select class="form-control" [(ngModel)]="solicitud.cantidad" name="cantidad" equired>
+          <option [ngValue]="undefined">Seleccione la cantidad</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+        <div class="invalid-feedback">Este campo es obligatorio.</div>
+      </div>
+
+
+      <div class="mb-3" id="justificacionContainer">
+        <label for="textarea" class="form-label h5 mt-3" >Justificación</label>
+        <textarea class="form-control"   [(ngModel)]="solicitud.justificacion" name="justificacion" rows="3" required></textarea>
+        <div class="invalid-feedback">Este campo es obligatorio.</div>
+      </div>
+
+      <div class="form-group col-sm-12">
+        <label class="control-label h5">Datos</label>
+        <div>
+          <div class="card card-body">
+            {{cartucho.modelo!==undefined?cartucho.modelo:""}}&nbsp;
+
+            {{solicitud.cantidad!==undefined?solicitud.cantidad:""}}&nbsp;
+
+
+            {{impresora.modelo!==undefined?impresora.modelo:""}}&nbsp;
+
+          </div>
+        </div>
+      </div>
+
+      <div>
+
+        <button type="button" id="submitButton" class="btn mt-4 mb-4 pls-5 col-sm-2 text-sm-center fs-5 float-end mr-3"
+          role="button" (click)='enviarSolicitud()'>Enviar</button>
+        
+    
+  </div>
+  <div class="card-body">
+    <button type="button" class="btn btn-primary " id="btn-agregar" class="btn" data-bs-toggle="btn" data-bs-placement="top" title="Agregar Marca" [routerLink]="['/form-solicitud']">Agregar Solicitud</button>
+    <div id="" class=" dt-bootstrap4">
+      <br/>
+      <div class="row">
+        <div class="col-sm-12 col-md-6"></div>
+        <div class="col-sm-12 col-md-6"></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <table 
+          class="table table-striped table-bordered table-hover ">
+            <thead>
+              <tr class="divisiones">
+                <th style="width: 10px">
+                  ID</th>
+                  <th >Usuario</th>
+                  <th >Cartucho</th>
+                  <th >Tipo</th>
+                  <th >Justificación</th>
+                  <th >Estado</th>
+                <th>Funciones Disponible</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="odd" *ngFor="let item of solicitudes">
+                <td>{{item.id}} </td>
+                <td>{{item.usuario.username}} </td>
+                <td *ngFor="let car of item.cartuchos">
+                {{car.marca.nombre}} {{car.modelo}}
+                </td>
+                <td>{{item.descripcion}}</td>
+                
+                <td>{{item.justificacion}}</td>
+                
+                <td>{{item.estado.descripcion}}</td>
+
+              
+                <td>
+                  <div class="btn-group">
+                    <button type="button" class="btn  btn-warning"  data-bs-toggle="btn" data-bs-placement="top" title="Modificar" [routerLink]="['/formmarca',item.id]">
+                      <i class="bi bi-pencil-square" ></i>
+                    </button>&nbsp;
+                    <button type="button" class="btn btn-danger" style="margin-right: 5px;" (click)="delete(item)" data-bs-toggle="btn" data-bs-placement="top" title="Eliminar">
+                      <i class="bi bi-trash3"></i>
+                  </button>
+                 
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+             <!--   <th>ID</th>
+                <th>NOMBRE</th>
+                <td></td>-->
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- /.card-body -->
+  <div class="card-footer">
+ 
+  </div>
+  <!-- /.card-footer-->
